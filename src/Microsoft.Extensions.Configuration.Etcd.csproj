@@ -7,6 +7,7 @@
 
   <!-- Nuget properties -->
   <PropertyGroup>
+    <Title>Microsoft.Extensions.Configuration.Etcd</Title>
     <PackageId>yiwwan.Microsoft.Extensions.Configuration.Etcd</PackageId>
     <Version>0.0.1</Version>
     <Authors>yiwwan</Authors>

@@ -10,7 +10,7 @@ Etcd as a configuration source for Asp.Net Core applications.
 // AspNet Core 3.0
 .ConfigureAppConfiguration(config =>
 {
-    config.AddEtcd("127.0.0.1", 2379, options=>
+    config.AddEtcd("127.0.0.1", 2379, options =>
     {
         //options.Prefix = "ETCD_"; // Prefix for matching configuration keys for etcd. Default is "ETCD_".
         //options.RemovePrefix = true; // Should the lib remove the prefix from the key when used for querying. Default is true.
