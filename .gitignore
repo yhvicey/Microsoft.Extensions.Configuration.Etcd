@@ -1,0 +1,8 @@
+# IDE/Editor Files
+.vs/
+.vscode/
+*proj.user
+
+# Build Output
+bin/
+obj/

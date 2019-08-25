@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Rules for Proca project" Description="Code analysis rules for Proca project." ToolsVersion="15.0">
+    <!-- For detailed rule descriptions, please refer to https://github.com/DotNetAnalyzers/StyleCopAnalyzers/tree/master/documentation -->
+    <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+        <!-- XmlCommentAnalysisDisabled -->
+        <Rule Id="SA0001" Action="None" />
+        <!-- PrefixLocalCallsWithThis -->
+        <Rule Id="SA1101" Action="None" />
+        <!-- ParameterMustNotSpanMultipleLines -->
+        <Rule Id="SA1118" Action="None" />
+        <!-- DoNotUseRegions -->
+        <Rule Id="SA1124" Action="None" />
+        <!-- UsingDirectivesMustBePlacedCorrectly -->
+        <Rule Id="SA1200" Action="None" />
+        <!-- FileMayOnlyContainASingleType -->
+        <Rule Id="SA1402" Action="None" />
+        <!-- SingleLineCommentMustBePrecededByBlankLine -->
+        <Rule Id="SA1515" Action="None" />
+        <!-- Documentation Rules -->
+        <!-- ElementsMustBeDocumented -->
+        <Rule Id="SA1600" Action="None" />
+        <!-- PartialElementsMustBeDocumented -->
+        <Rule Id="SA1601" Action="None" />
+        <!-- PropertySummaryDocumentationMustMatchAccessors -->
+        <Rule Id="SA1623" Action="None" />
+        <!-- FileMustHaveHeader -->
+        <Rule Id="SA1633" Action="None" />
+        <!-- FileNameMustMatchTypeName -->
+        <Rule Id="SA1649" Action="None" />
+        <!-- EnableXmlDocumentationOutput -->
+        <Rule Id="SA1652" Action="None" />
+    </Rules>
+</RuleSet>

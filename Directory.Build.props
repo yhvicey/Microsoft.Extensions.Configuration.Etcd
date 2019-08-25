@@ -1,0 +1,48 @@
+<Project>
+
+    <!-- Build properties -->
+    <PropertyGroup>
+        <!-- Platform & Configuration -->
+        <Platform Condition=" $(Platform) == '' ">x64</Platform>
+        <Configuration Condition=" $(Configuration) == '' ">Debug</Configuration>
+        <!-- Default TargetFramework -->
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <!-- Default language version -->
+        <LangVersion>8.0</LangVersion>
+        <!-- Other Properties -->
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <Nullable>enable</Nullable>
+        <NullableContextOptions>enable</NullableContextOptions>
+    </PropertyGroup>
+
+    <!-- Custom directories -->
+    <PropertyGroup>
+        <EnlistmentRoot Condition=" $(EnlistmentRoot) == '' ">$(MSBuildThisFileDirectory.TrimEnd("\"))</EnlistmentRoot>
+        <SourceFolder>$(EnlistmentRoot)/src</SourceFolder>
+        <DropFolder>$(OutFolder)/drop</DropFolder>
+        <TestFolder>$(OutFolder)/test</TestFolder>
+    </PropertyGroup>
+
+    <!-- Override default directories -->
+    <PropertyGroup>
+        <PublishDir>$(DropFolder)/$(MSBuildProjectName)/$(Configuration)/$(Platform)/</PublishDir>
+        <VSTestResultsDirectory>$(TestFolder)/</VSTestResultsDirectory>
+    </PropertyGroup>
+
+    <!-- StyleCop settings -->
+    <PropertyGroup>
+        <!-- Enable style cop by default -->
+        <EnableStyleCop Condition=" $(EnableStyleCop) == '' ">false</EnableStyleCop>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" $(EnableStyleCop) == 'true' ">
+        <CodeAnalysisRuleSet>$(EnlistmentRoot)/.ruleset</CodeAnalysisRuleSet>
+    </PropertyGroup>
+
+    <ItemGroup Condition=" $(EnableStyleCop) == 'true' ">
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
+
+</Project>

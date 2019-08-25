@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <!-- Nuget properties -->
+  <PropertyGroup>
+    <PackageId>yiwwan.Microsoft.Extensions.Configuration.Etcd</PackageId>
+    <Version>0.0.1</Version>
+    <Authors>yiwwan</Authors>
+    <Description>Etcd as a configuration source.</Description>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/yhvicey/Microsoft.Extensions.Configuration.Etcd</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/yhvicey/Microsoft.Extensions.Configuration.Etcd</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>etc,configuration,extensions</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="dotnet-etcd" Version="2.3.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
