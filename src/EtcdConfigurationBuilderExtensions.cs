@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Configuration.Etcd.Clients;
 
 namespace Microsoft.Extensions.Configuration.Etcd
 {
@@ -15,10 +16,10 @@ namespace Microsoft.Extensions.Configuration.Etcd
             this IConfigurationBuilder configurationBuilder,
             string host,
             int port,
-            Action<EtcdClientOptions>? configureClientOptions = null,
+            Action<EtcdClientWrapperOptions>? configureClientOptions = null,
             Action<EtcdOptions>? configureOptions = null)
         {
-            var clientOptions = new EtcdClientOptions(host, port);
+            var clientOptions = new EtcdClientWrapperOptions(host, port);
             configureClientOptions?.Invoke(clientOptions);
 
             return configurationBuilder.AddEtcd(new EtcdClientWrapper(clientOptions), configureOptions);

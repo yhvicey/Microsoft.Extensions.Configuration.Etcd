@@ -1,5 +1,6 @@
 ﻿using System;
-using Microsoft.Extensions.Primitives;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration.Etcd.Refreshers;
 
 namespace Microsoft.Extensions.Configuration.Etcd
 {
@@ -7,7 +8,7 @@ namespace Microsoft.Extensions.Configuration.Etcd
     {
         public delegate void ExceptionHandler(Exception ex);
 
-        public Func<IChangeToken>? ChangeTokenProvider { get; set; }
+        public IList<Refresher> Refreshers { get; set; } = new List<Refresher>();
 
         public string Prefix { get; set; } = "ETCD_";
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration.Etcd.Refreshers;
 
 namespace Microsoft.Extensions.Configuration.Etcd.Sample.Controllers
 {

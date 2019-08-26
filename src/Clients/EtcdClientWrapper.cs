@@ -1,43 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Linq;
-using System.Text;
 using dotnet_etcd;
-using Grpc.Core;
-using Microsoft.Extensions.Primitives;
+using Etcdserverpb;
+using Google.Protobuf;
 
-namespace Microsoft.Extensions.Configuration.Etcd
+namespace Microsoft.Extensions.Configuration.Etcd.Clients
 {
-    public class EtcdClientOptions
-    {
-        public EtcdClientOptions(string host, int port)
-        {
-            Host = host;
-            Port = port;
-        }
-
-        public string Host { get; }
-
-        public int Port { get; }
-
-        public string CaCert { get; set; } = string.Empty;
-
-        public string ClientCert { get; set; } = string.Empty;
-
-        public string ClientKey { get; set; } = string.Empty;
-
-        public string Password { get; set; } = string.Empty;
-
-        public string PublicRootCa { get; set; } = string.Empty;
-
-        public string UserName { get; set; } = string.Empty;
-    }
 
     public class EtcdClientWrapper : IEtcdClient
     {
         private readonly EtcdClient client;
+        private readonly ConcurrentDictionary<string, string> previousWatchedValues = new ConcurrentDictionary<string, string>();
 
-        public EtcdClientWrapper(EtcdClientOptions options)
+        public EtcdClientWrapper(EtcdClientWrapperOptions options)
         {
             client = new EtcdClient(options.Host, options.Port, options.UserName, options.CaCert, options.ClientCert, options.ClientKey, options.PublicRootCa);
         }
@@ -61,23 +37,29 @@ namespace Microsoft.Extensions.Configuration.Etcd
 
         public void Watch(string key, Action<string?, string?> callback)
         {
+            var req = new WatchRequest
+            {
+                CreateRequest = new WatchCreateRequest
+                {
+                    Key = ByteString.CopyFromUtf8(key),
+                },
+            };
             client.Watch(key, resp =>
             {
+                previousWatchedValues.TryGetValue(key, out string? previousWatchedValue);
                 if (resp.Events.Any())
                 {
                     var evt = resp.Events.First();
                     var value = evt.Kv.Value.ToStringUtf8();
                     callback?.Invoke(previousWatchedValue, value);
-                    previousWatchedValue = value;
+                    previousWatchedValues[key] = value;
                 }
                 else
                 {
                     callback?.Invoke(previousWatchedValue, null);
-                    previousWatchedValue = null;
+                    previousWatchedValues.TryRemove(key, out _);
                 }
             });
         }
-
-        private string? previousWatchedValue = null;
     }
 }

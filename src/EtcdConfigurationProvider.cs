@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Extensions.Primitives;
 
 namespace Microsoft.Extensions.Configuration.Etcd
 {
     public class EtcdConfigurationProvider : ConfigurationProvider, IDisposable
     {
-        private readonly IDisposable changeTokenRegistration;
+        private readonly IList<IDisposable> refresherRegistrations = new List<IDisposable>();
         private readonly IEtcdClient client;
         private readonly EtcdOptions options;
 
@@ -13,16 +15,24 @@ namespace Microsoft.Extensions.Configuration.Etcd
         {
             this.options = options;
             this.client = client;
-            // Register change token provider
-            var changeTokenProvider = options.ChangeTokenProvider ?? new Func<IChangeToken>(() => NullChangeToken.Instance);
-            changeTokenRegistration = ChangeToken.OnChange(
-                options.ChangeTokenProvider ?? (() => NullChangeToken.Instance),
-                () => Data.Clear());
+            if (options.Refreshers.Any())
+            {
+                // Register refreshers
+                foreach (var refresher in options.Refreshers)
+                {
+                    refresherRegistrations.Add(ChangeToken.OnChange(
+                        () => refresher.ProduceChangeToken(client),
+                        () => Data.Clear()));
+                }
+            }
         }
 
         public void Dispose()
         {
-            changeTokenRegistration.Dispose();
+            foreach (var refresherRegistration in refresherRegistrations)
+            {
+                refresherRegistration.Dispose();
+            }
             client.Dispose();
         }
 
