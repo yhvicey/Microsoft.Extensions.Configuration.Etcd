@@ -28,7 +28,7 @@ namespace Microsoft.Extensions.Configuration.Etcd.Sample.Controllers
         [HttpGet("reset")]
         public void Reset()
         {
-            EtcdConfigurationRefresher.Instance.Refresh();
+            EtcdConfigurationManualRefresher.Instance.Refresh();
         }
     }
 }

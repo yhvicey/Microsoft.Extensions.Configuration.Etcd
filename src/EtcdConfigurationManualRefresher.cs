@@ -1,14 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Primitives;
 
-namespace Microsoft.Extensions.Configuration.Etcd.Sample
+namespace Microsoft.Extensions.Configuration.Etcd
 {
-    public class EtcdConfigurationRefresher : IChangeToken
+    public class EtcdConfigurationManualRefresher : IChangeToken
     {
+        public static EtcdConfigurationManualRefresher Instance { get; } = new EtcdConfigurationManualRefresher();
+
         private Registration? registration;
+
+        private EtcdConfigurationManualRefresher()
+        {
+        }
 
         public bool ActiveChangeCallbacks => false;
 
@@ -25,20 +28,18 @@ namespace Microsoft.Extensions.Configuration.Etcd.Sample
             registration?.Refresh();
         }
 
-        public void Reset()
+        internal void Reset()
         {
             registration = null;
         }
 
-        public static EtcdConfigurationRefresher Instance { get; } = new EtcdConfigurationRefresher();
-
         private class Registration : IDisposable
         {
-            private readonly EtcdConfigurationRefresher refresher;
+            private readonly EtcdConfigurationManualRefresher refresher;
             private readonly Action<object> callback;
             private readonly object state;
 
-            public Registration(EtcdConfigurationRefresher refresher, Action<object> callback, object state)
+            public Registration(EtcdConfigurationManualRefresher refresher, Action<object> callback, object state)
             {
                 this.refresher = refresher;
                 this.callback = callback;
@@ -50,7 +51,7 @@ namespace Microsoft.Extensions.Configuration.Etcd.Sample
                 refresher.Reset();
             }
 
-            public void Refresh()
+            internal void Refresh()
             {
                 callback?.Invoke(state);
             }
